@@ -3,9 +3,9 @@ rewriter.py
 -----------
 Constructive rewrite module using a pretrained seq2seq detoxification model.
 
-Model: s-nlp/bart-base-detoxification
+Model: s-nlp/bart-base-detox
   - Fine-tuned BART-base on ParaDetox dataset (toxic → clean paraphrase pairs)
-  - HuggingFace: https://huggingface.co/s-nlp/bart-base-detoxification
+  - HuggingFace: https://huggingface.co/s-nlp/bart-base-detox
   - Task: given a toxic sentence, generate a semantically similar but non-toxic version
 
 Usage:
@@ -19,7 +19,8 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from typing import Optional
 
-MODEL_NAME = "s-nlp/bart-base-detoxification"
+MODEL_NAME = "s-nlp/bart-base-detox"
+TOKENIZER_NAME = "facebook/bart-base"
 
 
 class Rewriter:
@@ -27,7 +28,7 @@ class Rewriter:
     Wraps the pretrained BART detoxification model for inference.
 
     Args:
-        model_name  : HuggingFace model ID (default: s-nlp/bart-base-detoxification)
+        model_name  : HuggingFace model ID (default: s-nlp/bart-base-detox)
         device      : torch device — auto-detected if not provided
         max_length  : max tokens in generated output
         num_beams   : beam search width (higher = better quality, slower)
@@ -36,6 +37,7 @@ class Rewriter:
     def __init__(
         self,
         model_name: str  = MODEL_NAME,
+        tokenizer_name: str  = TOKENIZER_NAME,
         device:     Optional[torch.device] = None,
         max_length: int  = 128,
         num_beams:  int  = 4,
@@ -45,7 +47,7 @@ class Rewriter:
         self.num_beams  = num_beams
 
         print(f"Loading detoxification model: {model_name} ...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
         self.model     = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(self.device)
         self.model.eval()
         print("Rewriter model ready.")
@@ -123,3 +125,5 @@ def get_rewriter() -> Rewriter:
     if _rewriter_instance is None:
         _rewriter_instance = Rewriter()
     return _rewriter_instance
+
+
