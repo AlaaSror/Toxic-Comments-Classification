@@ -81,7 +81,7 @@ class PredictResponse(BaseModel):
 # ── Rewrite suggestion (pretrained BART detoxification) ───────────────────────
 def suggest_rewrite(text: str, flagged: list[str]) -> str:
     """
-    Generate a clean paraphrase using s-nlp/bart-base-detoxification.
+    Generate a clean paraphrase using s-nlp/bart-base-detox.
     Only called when at least one toxicity label is flagged.
 
     Args:
