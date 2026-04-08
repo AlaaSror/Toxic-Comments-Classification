@@ -224,41 +224,43 @@ def compute_label_weights(loader: DataLoader) -> torch.Tensor:
     weights = neg / (pos + 1e-6)
     return weights
 
-train_loader, val_loader, test_loader, vocab = get_dataloaders()
+if __name__ == "__main__":
 
-print("Vocab size:", len(vocab))
-print("Train batches:", len(train_loader))
+    train_loader, val_loader, test_loader, vocab = get_dataloaders()
 
-for x, y in train_loader:
-    print("Input shape:", x.shape)   # (batch_size, max_len)
-    print("Labels shape:", y.shape) # (batch_size, num_labels)
+    print("Vocab size:", len(vocab))
+    print("Train batches:", len(train_loader))
 
-    print("\nSample input IDs:\n", x[0][:20])
-    print("\nSample labels:\n", y[0])
+    for x, y in train_loader:
+        print("Input shape:", x.shape)   # (batch_size, max_len)
+        print("Labels shape:", y.shape) # (batch_size, num_labels)
 
-    break
+        print("\nSample input IDs:\n", x[0][:20])
+        print("\nSample labels:\n", y[0])
 
-idx = 0
-ids, labels = train_loader.dataset[idx]
+        break
 
-tokens = [vocab.idx2token[i.item()] for i in ids if i.item() != 0]
+    idx = 0
+    ids, labels = train_loader.dataset[idx]
 
-print("Decoded text:")
-print(" ".join(tokens[:30]))
+    tokens = [vocab.idx2token[i.item()] for i in ids if i.item() != 0]
 
-print("\nLabels:", labels)
+    print("Decoded text:")
+    print(" ".join(tokens[:30]))
 
-raw = load_dataset("google/civil_comments")
-example = raw["train"][0]
+    print("\nLabels:", labels)
 
-print("Raw scores:")
-for l in LABELS:
-    print(l, ":", example[l])
+    raw = load_dataset("google/civil_comments")
+    example = raw["train"][0]
 
-print("\nAfter thresholding:")
-print(train_loader.dataset.labels[0])
+    print("Raw scores:")
+    for l in LABELS:
+        print(l, ":", example[l])
 
-ids, _ = train_loader.dataset[0]
+    print("\nAfter thresholding:")
+    print(train_loader.dataset.labels[0])
 
-print("Length:", len(ids))         # should be 200
-print("Num PAD tokens:", (ids == 0).sum())
+    ids, _ = train_loader.dataset[0]
+
+    print("Length:", len(ids))         # should be 200
+    print("Num PAD tokens:", (ids == 0).sum())
