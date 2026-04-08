@@ -262,7 +262,7 @@ On the **Predict** page, the detection threshold can be adjusted using the sideb
 |---|---|
 | Primary dataset | https://huggingface.co/datasets/google/civil_comments |
 | Alternative dataset | https://huggingface.co/datasets/google/jigsaw_toxicity_pred |
-| BART detoxification model | https://huggingface.co/s-nlp/bart-base-detoxification |
+| BART detoxification model | https://huggingface.co/s-nlp/bart-base-detox |
 | ParaDetox dataset | https://huggingface.co/datasets/s-nlp/paradetox |
 | Research paper (civil_comments benchmark) | https://arxiv.org/abs/2301.11125 |
 | BART original paper | https://arxiv.org/abs/1910.13461 |
