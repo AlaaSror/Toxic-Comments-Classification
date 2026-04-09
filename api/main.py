@@ -17,9 +17,9 @@ import os, sys
 from contextlib import asynccontextmanager
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from bilstm import ToxicBiLSTM
-from dataset import LABELS, clean_text, MAX_SEQ_LEN
-from rewriter import get_rewriter
+from models.bilstm import ToxicBiLSTM
+from data.dataset import LABELS, clean_text, MAX_SEQ_LEN
+from utils.rewriter import get_rewriter
 
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 THRESHOLD  = 0.5

@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("Agg")
 
-from dataset import LABELS, clean_text, MAX_SEQ_LEN
-from bilstm import ToxicBiLSTM
-from rewriter import get_rewriter
+from data.dataset import LABELS, clean_text, MAX_SEQ_LEN
+from models.bilstm import ToxicBiLSTM
+from utils.rewriter import get_rewriter
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -52,6 +52,11 @@ EXAMPLE_COMMENTS = [
 
 
 # ── Load model ─────────────────────────────────────────────────────────────────
+import sys
+import data.dataset
+
+sys.modules['dataset'] = data.dataset
+
 @st.cache_resource
 def load_model():
     if not os.path.exists(CHECKPOINT):

@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score, f1_score, hamming_loss
 
-from dataset import get_dataloaders, compute_label_weights, LABELS
-from bilstm import ToxicBiLSTM
+from data.dataset import get_dataloaders, compute_label_weights, LABELS
+from models.bilstm import ToxicBiLSTM
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
