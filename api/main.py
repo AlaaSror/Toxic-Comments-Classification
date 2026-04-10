@@ -21,9 +21,13 @@ from models.bilstm import ToxicBiLSTM
 from data.dataset import LABELS, clean_text, MAX_SEQ_LEN
 from utils.rewriter import get_rewriter
 
+import data.dataset
+
+sys.modules['dataset'] = data.dataset
+
 DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 THRESHOLD  = 0.5
-CHECKPOINT = os.path.join(os.path.dirname(__file__), ".", "checkpoints", "best_model.pt")
+CHECKPOINT = os.path.join(os.path.dirname(__file__), "..", "checkpoints", "best_model.pt")
 
 # ── Load model on startup ──────────────────────────────────────────────────────
 model = None
