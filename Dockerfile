@@ -6,7 +6,7 @@
 #    Smaller  : pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime  ← used here
 #    Full dev : pytorch/pytorch:2.1.0-cuda12.1-cudnn8-devel
 # ================================================================
-FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
+FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
 
 LABEL maintainer="AlaaSror"
 LABEL description="Toxic Comments Classification — sentiment analysis & auto-response"
@@ -19,12 +19,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy and install remaining requirements
-# torch & torchvision are already in the base image so pip skips them
 COPY requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
 
+# Step 1: Install CUDA torch first
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir \
+        torch==2.1.0+cu121 \
+        torchvision==0.16.0+cu121 \
+        --extra-index-url https://download.pytorch.org/whl/cu121
+
+# Step 2: Install everything else, excluding torch/torchvision/transformers
+RUN grep -vE "^(torch(vision)?|transformers)[>=<!]" requirements.txt > /tmp/requirements_notorch.txt && \
+    pip install --no-cache-dir -r /tmp/requirements_notorch.txt \
+        --extra-index-url https://download.pytorch.org/whl/cu121 && \
+    pip install --no-cache-dir "transformers==4.36.0"
+
+    
 # Pre-download NLTK corpora so container works fully offline
 RUN python -m nltk.downloader -d /usr/share/nltk_data \
         punkt \
