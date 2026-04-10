@@ -180,7 +180,7 @@ All runs are logged to MLflow including hyperparameters, per-epoch metrics, and 
 toxiclear/
 ├── data/
 │   ├── dataset.py          # HuggingFace loader, vocabulary, preprocessing, DataLoaders
-│   └── augmentation.py     # Synonym replacement, random deletion, random swap
+│  
 ├── models/
 │   ├── bilstm.py           # Custom BiLSTM + Self-Attention classifier (PyTorch)
 │   └── trainer.py          # Training loop, evaluation, MLflow tracking, checkpointing
