@@ -160,9 +160,6 @@ The rewriter is only called when the BiLSTM flags at least one label above the t
 
 ---
 
-## Experiment Tracking
-
-Three experiments were run and compared using **MLflow**:
 
 | Experiment | Architecture | Val AUC | Val F1 | Notes |
 |---|---|---|---|---|
@@ -170,7 +167,6 @@ Three experiments were run and compared using **MLflow**:
 | Exp 2 — Full model | BiLSTM, 2 layers + attention | 0.961 | 0.878 | Strong improvement |
 | Exp 3 — Tuned | Exp 2 + lower LR + higher dropout | 0.974 | 0.891 | Best overall |
 
-All runs are logged to MLflow including hyperparameters, per-epoch metrics, and model artifacts.
 
 ---
 
@@ -183,17 +179,13 @@ toxiclear/
 │  
 ├── models/
 │   ├── bilstm.py           # Custom BiLSTM + Self-Attention classifier (PyTorch)
-│   └── trainer.py          # Training loop, evaluation, MLflow tracking, checkpointing
+│   └── trainer.py          # Training loop, evaluation, checkpointing
 ├── api/
 │   └── main.py             # FastAPI REST endpoint (/predict, /health, /labels)
 ├── ui/
 │   └── app.py              # Streamlit web app (Predict / Metrics / Curves / Error Analysis)
 ├── utils/
-│   ├── metrics.py          # ROC-AUC, F1, Hamming loss computation
-│   ├── visualize.py        # ROC curves, confusion matrices, error analysis plots
 │   └── rewriter.py         # BART detoxification wrapper (s-nlp/bart-base-detoxification)
-├── notebooks/
-│   └── experiment.ipynb    # Full experimentation notebook (EDA → training → comparison)
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
@@ -235,8 +227,8 @@ Visit `http://localhost:8501` in your browser.
 
 ### 6. Run with Docker
 ```bash
-docker build -t toxiclear .
-docker run -p 8501:8501 toxiclear
+docker build -t toxic-comments:v8 .
+docker run -p 8000:8000 -p 8501:8501 toxic-comments:v8  
 ```
 
 ---
@@ -268,4 +260,3 @@ On the **Predict** page, the detection threshold can be adjusted using the sideb
 | BART original paper | https://arxiv.org/abs/1910.13461 |
 | BiLSTM — PyTorch docs | https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html |
 | BCEWithLogitsLoss — PyTorch docs | https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html |
-| MLflow experiment tracking | https://mlflow.org/docs/latest/index.html |
